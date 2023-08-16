@@ -1,2 +1,4 @@
-# investment
- Scripts for investing
+# Web Crawler
+- BeautifulSoup
+- Selenium
+- Scrapy
