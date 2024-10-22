@@ -1,12 +1,9 @@
 import json
+from matplotlib import colors
 import pandas as pd
 import matplotlib.pyplot as plt
 from collections import defaultdict
-
-import json
-import matplotlib.pyplot as plt
-from collections import defaultdict
-
+import seaborn as sns
 
 # 設定全域字體和負號顯示
 def load_config():
@@ -18,10 +15,9 @@ def load_config():
         records_by_date = json.load(f)
         
     return records_by_date
-        
+
 
 def amount_by_dates(records_by_date):
-
     # 初始化一個字典來存儲日期和類別的重量
     date_category_weight = defaultdict(lambda: defaultdict(float))
 
@@ -35,8 +31,11 @@ def amount_by_dates(records_by_date):
     # 將數據轉換為 DataFrame 格式
     df = pd.DataFrame(date_category_weight).T.fillna(0)
 
+    # 定義調色板，這裡使用 seaborn 的 color_palette 方法
+    palette = sns.color_palette("husl", n_colors=len(df.columns))  # 使用 HUSL 調色板生成不重複的顏色
+
     # 繪製堆疊柱狀圖
-    df.plot(kind='bar', stacked=True, figsize=(12, 8))
+    df.plot(kind='bar', stacked=True, figsize=(12, 8), color=palette)
 
     plt.title('各日期類別總重量分析', fontsize=16)
     plt.xlabel('日期', fontsize=12)
@@ -45,7 +44,7 @@ def amount_by_dates(records_by_date):
     plt.legend(title='類別', bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout()
     plt.show()
-
+    
 def percent_by_items(records_by_date):
     
     # 初始化一個字典來存儲食物類別和總重量
