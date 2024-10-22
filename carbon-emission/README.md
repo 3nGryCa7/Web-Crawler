@@ -1,7 +1,13 @@
 # Carbon Emission Analysis
 
 ## Set up
-- `.env`: `EMAIL` and `PASSWORD` of the [MCRP](https://mcrp.jwfu.me) website.
+- Set data in `.env`
+  `EMAIL` and `PASSWORD` of the [MCRP](https://mcrp.jwfu.me) website.
+- Create virtual environment
+  ```bash=
+  virtualenv venv
+  ./.venv/Scripts/Activate.ps1  # powershell
+  ```
 
 ## Workflow
 1. Call `crawl_data()` to grab your record data, and them store in `data.json`.
