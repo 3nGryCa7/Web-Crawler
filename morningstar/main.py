@@ -1,10 +1,9 @@
-# import libraries for data processing
 import pandas as pd
-# import libraries for web scraping
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # import libraries for visualization
@@ -99,9 +98,8 @@ def get_info(code: str, driver: webdriver.edge.webdriver.WebDriver) -> pd.DataFr
     target_span = driver.find_elements("css selector", ".mdc-data-point.mdc-data-point--style-box")
     # get the style
     style = ''.join(span.text for span in target_span if span.text != '')
-
+    
     return pd.DataFrame({'Sector': [industries[0].text], 'Industry': [industries[1].text], 'Investment Style': [style]})
-
 
 def get_valuation(code: str, driver: webdriver.edge.webdriver.WebDriver) -> pd.DataFrame:
     """Function: Get the stock quote from Morningstar"""
@@ -189,9 +187,17 @@ def _do_write_to_csv_16(file_path, data):
 
 # method: get to start the program
 
+
 def __main__():
     # set up the browser
-    driver = webdriver.Edge()
+    # driver = webdriver.Edge()
+    
+    options = Options()
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-software-rasterizer")
+    options.add_argument("--headless")
+    options.add_argument('--ignore-certificate-errors')
+    driver = webdriver.Edge(options=options)
 
     # get the stock code
     stock_code = input("Enter the stock code: ")

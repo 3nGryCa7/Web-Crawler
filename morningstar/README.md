@@ -1,14 +1,4 @@
-# Web Crawler
-
-- [Web Crawler](#web-crawler)
-  - [Morningstar](#morningstar)
-    - [Requirements](#requirements)
-    - [Functions](#functions)
-    - [Output Information](#output-information)
-
----
-
-## Morningstar
+# Morningstar
 
 ### Requirements
 
