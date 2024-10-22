@@ -14,10 +14,12 @@ def load_config():
     with open('data.json', 'r', encoding='utf-8') as f:
         records_by_date = json.load(f)
         
-    return records_by_date
+    palette = sns.color_palette("husl", n_colors=len(records_by_date))
+        
+    return records_by_date, palette
 
 
-def amount_by_dates(records_by_date):
+def amount_by_dates(records_by_date, palette):
     # 初始化一個字典來存儲日期和類別的重量
     date_category_weight = defaultdict(lambda: defaultdict(float))
 
@@ -31,9 +33,6 @@ def amount_by_dates(records_by_date):
     # 將數據轉換為 DataFrame 格式
     df = pd.DataFrame(date_category_weight).T.fillna(0)
 
-    # 定義調色板，這裡使用 seaborn 的 color_palette 方法
-    palette = sns.color_palette("husl", n_colors=len(df.columns))  # 使用 HUSL 調色板生成不重複的顏色
-
     # 繪製堆疊柱狀圖
     df.plot(kind='bar', stacked=True, figsize=(12, 8), color=palette)
 
@@ -45,7 +44,7 @@ def amount_by_dates(records_by_date):
     plt.tight_layout()
     plt.show()
     
-def percent_by_items(records_by_date):
+def percent_by_items(records_by_date, palette):
     
     # 初始化一個字典來存儲食物類別和總重量
     category_weight = defaultdict(float)
@@ -71,13 +70,10 @@ def percent_by_items(records_by_date):
     # 只顯示大於 1% 的標籤
     labels = [label if (weight / total_weight) * 100 >= 1 else '' for label, weight in zip(labels, sizes)]
 
-    # 定義顏色地圖，為每個部分分配不同的顏色
-    cmap = plt.cm.get_cmap('tab20')  # 使用 'tab20' 顏色圖，最多支持 20 種顏色
-    colors = cmap(range(len(labels)))
 
     # 繪製圓餅圖，將標籤移到外面，並調整距離
     plt.figure(figsize=(8, 8))
-    plt.pie(sizes, labels=labels, colors=colors, autopct=autopct_format, startangle=140, 
+    plt.pie(sizes, labels=labels, colors=palette, autopct=autopct_format, startangle=140, 
             labeldistance=1.1, pctdistance=0.85)
 
     plt.title('各食物類別總重量占比', fontsize=16)
